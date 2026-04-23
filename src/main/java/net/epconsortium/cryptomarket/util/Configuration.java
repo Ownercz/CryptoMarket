@@ -1016,6 +1016,19 @@ public class Configuration {
     }
 
     /**
+     * Returns the confirmation prompt message for sells, including fee info.
+     * Placeholders: {0} action, {1} amount, {2} coin, {3} gross,
+     * {4} fee, {5} net.
+     *
+     * @return the message
+     */
+    public String getMessageSellConfirmation() {
+        return getColoredString("negotiation-chat.confirmation-sell",
+                "&fDo you want to &7{0} {1} {2} &ffor &7{3} &fcoins "
+                        + "(fee: &7{4}&f, net: &7{5}&f)?");
+    }
+
+    /**
      * Returns name of the main menu's Withdraw button
      *
      * @return button name

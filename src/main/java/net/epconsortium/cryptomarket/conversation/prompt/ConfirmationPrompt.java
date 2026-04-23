@@ -77,6 +77,15 @@ public class ConfirmationPrompt extends FixedSetPrompt {
             return MessageFormat.format(message, config.getActionWithdraw(),
                     amount, coin, value, fee, net) + " " + formatFixedSet();
         }
+        if (negotiation == Negotiation.SELL) {
+            BigDecimal fee = plugin.getEconomy().computeWithdrawFee(value);
+            if (fee.signum() > 0) {
+                BigDecimal net = value.subtract(fee);
+                String message = config.getMessageSellConfirmation();
+                return MessageFormat.format(message, config.getActionSell(),
+                        amount, coin, value, fee, net) + " " + formatFixedSet();
+            }
+        }
 
         String message = config.getMessageNegotiationConfirmation();
         String action = null;

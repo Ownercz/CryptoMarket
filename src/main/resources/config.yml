@@ -198,6 +198,14 @@ negotiation-chat:
    # {4} is the fee taken (flat + percentage)
    # {5} is the net amount credited to the player
    confirmation-withdraw: '&fDo you want to &7{0} {1} {2} &ffor &7{3} &fcoins (fee: &7{4}&f, net: &7{5}&f)?'
+   #Confirmation prompt shown when negotiating a sell (shown only if a withdraw fee is configured)
+   # {0} is the action (sell-action)
+   # {1} is the amount of cryptocoin
+   # {2} is the cryptocoin
+   # {3} is the gross server-currency value
+   # {4} is the fee taken (flat + percentage)
+   # {5} is the net amount credited to the player
+   confirmation-sell: '&fDo you want to &7{0} {1} {2} &ffor &7{3} &fcoins (fee: &7{4}&f, net: &7{5}&f)?'
    #Last message
    success: '&fSuccessful negotiation!'
 #Some messages the plugin will send
