@@ -193,19 +193,38 @@ public class Economy {
 
         debug("Processing the sell of crypto for " + investor);
         debug("Amount: " + amount);
-        double toReceive = convert(coin, amount).doubleValue();
-        debug("To receive: " + toReceive);
 
-        if (amount.doubleValue() > 0) {
-            if (has(coin, investor, amount)) {
-                vaultEconomy.depositPlayer(investor.getPlayer(), toReceive);
-                //withdraw(investor, amount);
-                investor.getBalance(coin).decrease(amount, new BigDecimal(toReceive));
-                logger.log(investor, Negotiation.SELL, amount, coin, toReceive);
-                return true;
+        if (amount.doubleValue() <= 0) {
+            return false;
+        }
+        if (!has(coin, investor, amount)) {
+            return false;
+        }
+
+        BigDecimal gross = convert(coin, amount);
+        BigDecimal fee = computeWithdrawFee(gross);
+        if (fee.compareTo(gross) >= 0) {
+            debug("Sell fee (" + fee + ") >= gross (" + gross + "); aborting.");
+            return false;
+        }
+        BigDecimal net = gross.subtract(fee);
+        debug("Gross: " + gross + ", fee: " + fee + ", net: " + net);
+
+        vaultEconomy.depositPlayer(investor.getPlayer(), net.doubleValue());
+        investor.getBalance(coin).decrease(amount, gross);
+
+        if (fee.signum() > 0) {
+            String destination = config.getWithdrawFeeDestination();
+            if (destination != null && !destination.trim().isEmpty()) {
+                vaultEconomy.depositPlayer(Bukkit.getOfflinePlayer(destination.trim()), fee.doubleValue());
+                debug("Fee of " + fee + " deposited to " + destination);
+            } else {
+                debug("Fee of " + fee + " burned (no destination configured)");
             }
         }
-        return false;
+
+        logger.log(investor, Negotiation.SELL, amount, coin, net.doubleValue());
+        return true;
     }
 
     /**
