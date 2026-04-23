@@ -217,6 +217,8 @@ messages:
    error-database: '&fThere has been an error connecting to the database, contact an admin, please!'
    error-no-permission: '&fYou don''t have permission to do this!'
    saving-data: '&fSaving data...'
+   #Message sent after a successful /cm reload. {0} is a short status summary.
+   reloaded: '&a[CryptoMarket] {0}'
    player-balance-updated: '&f{0}''''s balance updated!'
    # {0} is the approximated minutes to complete the update, considering the API limits
    updating-content: '&fUpdating content, please, wait {0} minute(s)!'
@@ -243,6 +245,7 @@ messages:
    - '&b/cm today - shows today''s exchange rates'
    - '&b/cm update - updates the exchange rates'
    - '&c/cm save - saves the data to the database'
+   - '&c/cm reload - reloads the plugin configuration'
    - '&c/cm give <target> <amount> <coin> - gives the amount of the coin to the target player'
    - '&c/cm take <target> <amount> <coin> - takes the amount of the coin from the target player'
    - '&c/cm set <target> <amount> <coin> - sets the amount of the coin as the target''s balance'

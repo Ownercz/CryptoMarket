@@ -54,6 +54,8 @@ public class CryptoMarketCommand implements CommandExecutor, TabCompleter {
                 return processGiveCommand(commandSender, args);
             case "save":
                 return processSaveCommand(commandSender);
+            case "reload":
+                return processReloadCommand(commandSender);
             case "today":
                 return processTodayCommand(commandSender);
             case "update":
@@ -140,7 +142,7 @@ public class CryptoMarketCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender commandSender,
             Command command, String label, String[] args) {
         List<String> subCommands = Arrays.asList("set", "give", "take", "save",
-                "balance", "update", "today", "help");
+                "balance", "update", "today", "help", "reload");
         if (args.length == 0) {
             return subCommands;
         }
@@ -205,6 +207,22 @@ public class CryptoMarketCommand implements CommandExecutor, TabCompleter {
         } else {
             sender.sendMessage(config.getMessageErrorNoPermission());
         }
+        return true;
+    }
+
+    /**
+     * Process the reload command
+     *
+     * @param sender sender
+     * @return true if the syntax is ok
+     */
+    private boolean processReloadCommand(CommandSender sender) {
+        if (!sender.hasPermission("cryptomarket.reload")) {
+            sender.sendMessage(config.getMessageErrorNoPermission());
+            return true;
+        }
+        String status = plugin.reload();
+        sender.sendMessage(MessageFormat.format(config.getMessageReloaded(), status));
         return true;
     }
 

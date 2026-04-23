@@ -956,6 +956,15 @@ public class Configuration {
     }
 
     /**
+     * Returns the reload-complete message. {0} is a short status summary.
+     *
+     * @return the message
+     */
+    public String getMessageReloaded() {
+        return getColoredString("messages.reloaded", "&a[CryptoMarket] {0}");
+    }
+
+    /**
      * Returns the flat withdrawal fee (in server currency)
      *
      * @return the flat fee

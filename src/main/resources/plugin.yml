@@ -27,6 +27,8 @@ permissions:
     default: true
   cryptomarket.save:
     default: op
+  cryptomarket.reload:
+    default: op
   cryptomarket.give:
     default: op
   cryptomarket.take:
