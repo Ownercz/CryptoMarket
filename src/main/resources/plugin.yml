@@ -13,6 +13,8 @@ permissions:
     default: true
   cryptomarket.negotiate:
     default: true
+  cryptomarket.withdraw:
+    default: true
   cryptomarket.ranking:
     default: true
   cryptomarket.calendar:

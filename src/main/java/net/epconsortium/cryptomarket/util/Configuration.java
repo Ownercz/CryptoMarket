@@ -954,4 +954,94 @@ public class Configuration {
         return getColoredString("menu.items.coins.error-no-data",
                 "Error, update!");
     }
+
+    /**
+     * Returns the flat withdrawal fee (in server currency)
+     *
+     * @return the flat fee
+     */
+    public double getWithdrawFeeFlat() {
+        return getConfig().getDouble("withdraw.fee.flat", 0.0);
+    }
+
+    /**
+     * Returns the percentage withdrawal fee (0-100)
+     *
+     * @return the percentage fee
+     */
+    public double getWithdrawFeePercent() {
+        return getConfig().getDouble("withdraw.fee.percent", 0.0);
+    }
+
+    /**
+     * Returns the name of the Vault player account that receives the
+     * withdrawal fee. An empty value means the fee is burned.
+     *
+     * @return the destination account name
+     */
+    public String getWithdrawFeeDestination() {
+        return getConfig().getString("withdraw.fee.destination", "");
+    }
+
+    /**
+     * Returns the how much to withdraw prompt message
+     *
+     * @return the message
+     */
+    public String getMessageWithdrawNegotiation() {
+        return getColoredString("negotiation-chat.how-much-withdraw",
+                "&fHow much do you want to withdraw?");
+    }
+
+    /**
+     * Returns the name of the Withdraw action
+     *
+     * @return the name
+     */
+    public String getActionWithdraw() {
+        return getColoredString("negotiation-chat.withdraw-action", "withdraw");
+    }
+
+    /**
+     * Returns the confirmation prompt message for withdrawals.
+     * Placeholders: {0} action, {1} amount, {2} coin, {3} gross,
+     * {4} fee, {5} net.
+     *
+     * @return the message
+     */
+    public String getMessageWithdrawConfirmation() {
+        return getColoredString("negotiation-chat.confirmation-withdraw",
+                "&fDo you want to &7{0} {1} {2} &ffor &7{3} &fcoins "
+                        + "(fee: &7{4}&f, net: &7{5}&f)?");
+    }
+
+    /**
+     * Returns name of the main menu's Withdraw button
+     *
+     * @return button name
+     */
+    public String getButtonWithdrawName() {
+        return getColoredString("menu.items.withdraw.name", "&eWithdraw");
+    }
+
+    /**
+     * Returns the lore of the main menu's Withdraw button
+     *
+     * @return button lore
+     */
+    public List<String> getButtonWithdrawLore() {
+        List<String> lore = getConfig().getStringList("menu.items.withdraw.lore");
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
+        if (lore.isEmpty()) {
+            lore.add(" ");
+            lore.add("&7Left Click - &eWithdraw coins to server currency");
+        }
+        ArrayList<String> newLore = new ArrayList<>();
+        for (String s : lore) {
+            newLore.add(ChatColor.translateAlternateColorCodes('&', s));
+        }
+        return newLore;
+    }
 }

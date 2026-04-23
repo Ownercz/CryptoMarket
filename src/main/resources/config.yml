@@ -22,6 +22,16 @@ physical-currency: USD
 #Coins that the plugin will work with (you can find a list of valid coin in the digital_currency_list.csv file inside the JAR)
 coins:
 - BTC
+#Fee applied when a player withdraws coins to server currency via the Withdraw button
+#The final fee is computed as: flat + (gross * percent / 100), clamped so it never exceeds the gross amount
+withdraw:
+   fee:
+      #Flat fee taken from the withdrawal, in server currency
+      flat: 0.0
+      #Percentage fee (0-100) applied on top of the flat fee
+      percent: 0.0
+      #Player account name that receives the fee via Vault. Leave empty to burn the fee.
+      destination: ''
 #The main menu of the plugin, accessed using /cryptomarket
 menu:
    #Name of the menu
@@ -80,6 +90,13 @@ menu:
       calendar: '&aCalendar'
       update: '&aUpdate'
       ranking: '&aRanking'
+      #The item that opens the Withdraw negotiation
+      withdraw:
+         name: '&eWithdraw'
+         lore:
+         - ' '
+         - '&7Left Click - &eWithdraw coins to server currency'
+         - ' '
 #The Calendar menu, accessed via main menu
 #It shows the rates of previous days
 calendar:
@@ -154,6 +171,7 @@ negotiation-chat:
    valid-coins: '&fValid coins: {0}'
    how-much-buy: '&fHow much do you want to buy?'
    how-much-sell: '&fHow much do you want to sell?'
+   how-much-withdraw: '&fHow much do you want to withdraw?'
    error-insufficient-balance: '&fYou don''t have enough balance!'
    #If the user neither insert numbers nor a positive one
    error-invalid-value: '&fPlease, insert a valid value!'
@@ -171,6 +189,15 @@ negotiation-chat:
    cancel-word: cancel
    sell-action: sell
    buy-action: buy
+   withdraw-action: withdraw
+   #Confirmation prompt shown when negotiating a withdraw
+   # {0} is the action (withdraw-action)
+   # {1} is the amount of cryptocoin
+   # {2} is the cryptocoin
+   # {3} is the gross server-currency value
+   # {4} is the fee taken (flat + percentage)
+   # {5} is the net amount credited to the player
+   confirmation-withdraw: '&fDo you want to &7{0} {1} {2} &ffor &7{3} &fcoins (fee: &7{4}&f, net: &7{5}&f)?'
    #Last message
    success: '&fSuccessful negotiation!'
 #Some messages the plugin will send

@@ -209,6 +209,82 @@ public class Economy {
     }
 
     /**
+     * Computes the withdrawal fee for a given gross server-currency amount,
+     * based on the configured flat and percentage fee values. The result is
+     * clamped to the range [0, gross].
+     *
+     * @param gross gross server-currency amount being withdrawn
+     * @return the fee to apply
+     */
+    public BigDecimal computeWithdrawFee(BigDecimal gross) {
+        Objects.requireNonNull(gross);
+        BigDecimal flat = BigDecimal.valueOf(config.getWithdrawFeeFlat());
+        BigDecimal percent = BigDecimal.valueOf(config.getWithdrawFeePercent());
+        BigDecimal fee = flat.add(gross.multiply(percent).divide(BigDecimal.valueOf(100)));
+        if (fee.signum() < 0) {
+            fee = BigDecimal.ZERO;
+        }
+        if (fee.compareTo(gross) > 0) {
+            fee = gross;
+        }
+        return fee;
+    }
+
+    /**
+     * Processes a player-initiated withdrawal: converts the given amount of
+     * cryptocoin into server currency, applies a configurable flat+percentage
+     * fee, deposits the net amount to the investor's Vault account, and
+     * deposits the fee to the configured destination account (if any).
+     *
+     * @param coin the cryptocoin
+     * @param investor the investor
+     * @param amount amount of coin to withdraw
+     * @return true if success
+     */
+    public boolean withdrawToVault(String coin, Investor investor, BigDecimal amount) {
+        Objects.requireNonNull(investor);
+        Objects.requireNonNull(amount);
+
+        debug("Processing the withdraw of crypto for " + investor);
+        debug("Amount: " + amount);
+
+        if (amount.doubleValue() <= 0) {
+            debug("amount is less than or equal to 0");
+            return false;
+        }
+        if (!has(coin, investor, amount)) {
+            debug(investor + " does not have enough coin balance.");
+            return false;
+        }
+
+        BigDecimal gross = convert(coin, amount);
+        BigDecimal fee = computeWithdrawFee(gross);
+        // Reject if fee would consume the entire withdrawal, leaving no payout
+        if (fee.compareTo(gross) >= 0) {
+            debug("Withdraw fee (" + fee + ") >= gross (" + gross + "); aborting.");
+            return false;
+        }
+        BigDecimal net = gross.subtract(fee);
+        debug("Gross: " + gross + ", fee: " + fee + ", net: " + net);
+
+        investor.getBalance(coin).decrease(amount, gross);
+        vaultEconomy.depositPlayer(investor.getPlayer(), net.doubleValue());
+
+        if (fee.signum() > 0) {
+            String destination = config.getWithdrawFeeDestination();
+            if (destination != null && !destination.trim().isEmpty()) {
+                vaultEconomy.depositPlayer(Bukkit.getOfflinePlayer(destination.trim()), fee.doubleValue());
+                debug("Fee of " + fee + " deposited to " + destination);
+            } else {
+                debug("Fee of " + fee + " burned (no destination configured)");
+            }
+        }
+
+        logger.log(investor, Negotiation.WITHDRAW, amount, coin, net.doubleValue());
+        return true;
+    }
+
+    /**
      * Converts the amount of the crypto currency to the currency used on the
      * server
      *

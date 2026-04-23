@@ -55,6 +55,7 @@ public class MenuFrame extends Frame {
         add(profit());
         add(coins());
         add(wallet());
+        add(withdraw());
         add(ranking());
         add(calendar());
         add(update());
@@ -96,7 +97,7 @@ public class MenuFrame extends Frame {
         addPanels(this, BLACK_STAINED_GLASS_PANE, blackSlots);
 
         int[] greySlots = {1, 2, 4, 6, 7, 9, 11, 13, 15, 17, 18, 20, 24, 26, 22, 27, 29, 47, 48, 51, 50, 30, 36, 38, 39,
-                40, 41, 42, 44, 32, 33, 35};
+                40, 41, 42, 44, 33, 35};
         addPanels(this, GRAY_STAINED_GLASS_PANE, greySlots);
     }
 
@@ -165,6 +166,18 @@ public class MenuFrame extends Frame {
         });
 
         return coins;
+    }
+
+    @NotNull
+    private Component withdraw() {
+        ComponentImpl withdraw = new ComponentImpl(configuration.getButtonWithdrawName(),
+                configuration.getButtonWithdrawLore(), GOLD_INGOT, 32);
+        withdraw.setPermission(ClickType.LEFT, "cryptomarket.withdraw");
+        withdraw.setListener(ClickType.LEFT, () -> {
+            getViewer().closeInventory();
+            new NegotiationConversation(plugin, Negotiation.WITHDRAW, getViewer()).start();
+        });
+        return withdraw;
     }
 
     private List<String> getWalletLore() {

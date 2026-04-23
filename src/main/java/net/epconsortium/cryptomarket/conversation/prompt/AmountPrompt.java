@@ -1,7 +1,6 @@
 package net.epconsortium.cryptomarket.conversation.prompt;
 
 import net.epconsortium.cryptomarket.CryptoMarket;
-import net.epconsortium.cryptomarket.finances.Economy;
 import net.epconsortium.cryptomarket.finances.Negotiation;
 import net.epconsortium.cryptomarket.util.Configuration;
 import org.bukkit.conversations.ConversationContext;
@@ -50,6 +49,8 @@ public class AmountPrompt extends NumericPrompt {
                 return config.getMessageBuyNegotiation();
             case SELL:
                 return config.getMessageSellNegotiation();
+            case WITHDRAW:
+                return config.getMessageWithdrawNegotiation();
         }
 
         return null;

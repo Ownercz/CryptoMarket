@@ -51,6 +51,11 @@ public class ConfirmationPrompt extends FixedSetPrompt {
                     return new ErrorPrompt();
                 }
                 break;
+            case WITHDRAW:
+                if (!economy.withdrawToVault(coin, investor, value)) {
+                    return new ErrorPrompt();
+                }
+                break;
         }
 
         return new SuccessPrompt();
@@ -61,10 +66,20 @@ public class ConfirmationPrompt extends FixedSetPrompt {
         CryptoMarket plugin = (CryptoMarket) context.getPlugin();
         String coin = (String) context.getSessionData("coin");
         Configuration config = new Configuration(plugin);
-        String message = config.getMessageNegotiationConfirmation();
-        String action = null;
+        BigDecimal amount = ((BigDecimal) context.getSessionData("amount"));
+        BigDecimal value = plugin.getEconomy().convert(coin, amount);
 
         Negotiation negotiation = getNegotiation(context);
+        if (negotiation == Negotiation.WITHDRAW) {
+            BigDecimal fee = plugin.getEconomy().computeWithdrawFee(value);
+            BigDecimal net = value.subtract(fee);
+            String message = config.getMessageWithdrawConfirmation();
+            return MessageFormat.format(message, config.getActionWithdraw(),
+                    amount, coin, value, fee, net) + " " + formatFixedSet();
+        }
+
+        String message = config.getMessageNegotiationConfirmation();
+        String action = null;
         switch (negotiation) {
             case SELL:
                 action = config.getActionSell();
@@ -72,10 +87,10 @@ public class ConfirmationPrompt extends FixedSetPrompt {
             case PURCHASE:
                 action = config.getActionBuy();
                 break;
+            case WITHDRAW:
+                // handled above
+                break;
         }
-
-        BigDecimal amount = ((BigDecimal) context.getSessionData("amount"));
-        BigDecimal value = plugin.getEconomy().convert(coin, amount);
 
         return MessageFormat.format(message, action, amount, coin, value) + " " + formatFixedSet();
     }
