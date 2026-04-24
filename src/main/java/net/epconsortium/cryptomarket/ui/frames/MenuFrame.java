@@ -1,16 +1,15 @@
 package net.epconsortium.cryptomarket.ui.frames;
 
 import com.cryptomorin.xseries.XMaterial;
-import net.epconsortium.cryptomarket.conversation.NegotiationConversation;
 import net.epconsortium.cryptomarket.database.dao.Investor;
 import net.epconsortium.cryptomarket.finances.ExchangeRate;
 import net.epconsortium.cryptomarket.finances.ExchangeRates;
-import net.epconsortium.cryptomarket.finances.Negotiation;
 import net.epconsortium.cryptomarket.ui.Component;
 import net.epconsortium.cryptomarket.ui.ComponentImpl;
 import net.epconsortium.cryptomarket.ui.ComponentImpl.Builder;
 import net.epconsortium.cryptomarket.ui.Frame;
 import net.epconsortium.cryptomarket.ui.InventoryDrawer;
+import net.epconsortium.cryptomarket.ui.frames.negotiation.NegotiationActionFrame;
 import net.epconsortium.cryptomarket.util.Formatter;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -153,16 +152,9 @@ public class MenuFrame extends Frame {
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         coins.setItemMeta(meta);
 
-        coins.setPermission(ClickType.RIGHT, "cryptomarket.negotiate");
-        coins.setListener(ClickType.RIGHT, () -> {
-            getViewer().closeInventory();
-            new NegotiationConversation(plugin, Negotiation.PURCHASE, getViewer()).start();
-        });
         coins.setPermission(ClickType.LEFT, "cryptomarket.negotiate");
-        coins.setListener(ClickType.LEFT, () -> {
-            getViewer().closeInventory();
-            new NegotiationConversation(plugin, Negotiation.SELL, getViewer()).start();
-        });
+        coins.setListener(ClickType.LEFT, () ->
+                InventoryDrawer.getInstance().open(new NegotiationActionFrame(this, getViewer())));
 
         return coins;
     }

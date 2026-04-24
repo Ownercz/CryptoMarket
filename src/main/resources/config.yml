@@ -154,43 +154,82 @@ ranking:
          - ' '
          - '{0}'
          - ' '
-#Configuration relative to the Negotiation Chat, started using the Coins item in the main menu
-negotiation-chat:
-   #Prefix of the chat
-   prefix: '&e&lMinecore Burza &7→ '
-   #What word the user must type to end the negotiation
-   exit-word: konec
-   #First message of the conversation, {0} is the exit word
-   warning: '&fPro ukončení napiš &7{0}&f kdykoliv.'
-   choose-coin: '&fJakou měnu chceš obchodovat?'
-   # {0} is a formated list of the coins
-   valid-coins: '&fPlatné měny: {0}'
-   how-much-buy: '&fKolik chceš koupit?'
-   how-much-sell: '&fKolik chceš prodat?'
-   error-insufficient-balance: '&fNemáš dostatek prostředků!'
-   #If the user neither insert numbers nor a positive one
-   error-invalid-value: '&fZadej platnou hodnotu!'
-   #If there had been an error fetching the rates
-   error-outdated-data: '&fObchod selhal: data jsou zastaralá! Aktualizuj je!'
-   #Everything is ready to finish the negotiation, all the user need is to confirm
-   # {0} is the action (sell-action or buy-action)
-   # {1} is the amount
-   # {2} is the cryptocoin
-   # {3} is the server coin amount
-   confirmation: '&fChceš &7{0} {1} {2} &fza &7{3} &fmincí?'
-   #Appended to the confirmation message when the action is a sell (withdrawal) and any fee is configured
-   # {0} is the flat fee
-   # {1} is the percentage fee
-   # {2} is the net amount the user will actually receive
-   withdrawal-fee-info: ' &7(poplatek: &f{0} &7+ &f{1}%&7, obdržíš &f{2}&7)'
-   #Used to confirm the negotiation
-   yes-word: "ano"
-   #Used to cancel it and restart
-   cancel-word: zrušit
-   sell-action: prodat
+#Configuration relative to the Negotiation GUI, opened via the Coins button in the main menu
+negotiation:
+   #Action frame (Buy / Sell picker)
+   action-frame:
+      name: '&e&lVyber akci'
+      buy-button: '&a&lKoupit'
+      buy-button-lore:
+      - '&7Zaplatit serverovou měnou'
+      - '&7za kryptoměnu.'
+      sell-button: '&c&lProdat'
+      sell-button-lore:
+      - '&7Prodat kryptoměnu'
+      - '&7za serverovou měnu.'
+   #Coin frame (pick which coin to trade)
+   coin-frame:
+      name: '&e&lVyber měnu'
+      # {0} is the coin symbol
+      coin-button-name: '&f&l{0}'
+      # {0} is the formatted value, {1} is the physical currency code
+      coin-button-lore:
+      - ' '
+      - '&7Aktuální kurz:'
+      - '&f{0} {1}'
+      - ' '
+      coin-button-unavailable: '&c&oData nedostupná'
+   #Amount frame (pick how much to trade)
+   amount-frame:
+      # {0} is the action (buy/sell), {1} is the coin
+      name: '&e{0} &7→ &f{1}'
+      # {0} is the current amount, {1} is the coin
+      info-name: '&f&l{0} {1}'
+      # {0} = gross server-currency value, {1} = physical currency
+      info-lore:
+      - ' '
+      - '&7Hodnota: &f{0} {1}'
+      - ' '
+      # Same placeholders plus {2} = flat fee, {3} = percentage fee, {4} = net received
+      info-lore-sell:
+      - ' '
+      - '&7Hrubá hodnota: &f{0} {1}'
+      - '&7Poplatek: &f{2} &7+ &f{3}%'
+      - '&7Obdržíš: &a{4} {1}'
+      - ' '
+      # {0} is the step amount (1, 10, 100, 1000)
+      increment-button: '&a&l+{0}'
+      decrement-button: '&c&l-{0}'
+   #Confirmation frame (final review before committing)
+   confirm-frame:
+      name: '&e&lPotvrzení'
+      # {0} is the action, {1} is the amount, {2} is the coin
+      summary-name: '&f{0} &a{1} &f{2}'
+      # Same placeholders as amount-frame.info-lore
+      summary-lore:
+      - ' '
+      - '&7Celkem: &f{0} {1}'
+      - ' '
+      summary-lore-sell:
+      - ' '
+      - '&7Hrubá hodnota: &f{0} {1}'
+      - '&7Poplatek: &f{2} &7+ &f{3}%'
+      - '&7Obdržíš: &a{4} {1}'
+      - ' '
+   #Shared labels
+   back-button: '&aZpět'
+   confirm-button: '&a&lPotvrdit'
+   cancel-button: '&c&lZrušit'
+   #Action names used in summaries and success messages
    buy-action: koupit
-   #Last message
-   success: '&fObchod proběhl úspěšně!'
+   sell-action: prodat
+   #Chat messages sent after a GUI action finishes
+   success: '&aObchod proběhl úspěšně!'
+   error-insufficient-balance: '&cNemáš dostatek prostředků!'
+   error-outdated-data: '&cObchod selhal: data jsou zastaralá! Aktualizuj je!'
+   #Appended to the amount/confirm info for SELL when a withdrawal fee is configured
+   # {0} is the flat fee, {1} is the percentage fee, {2} is the net amount
+   withdrawal-fee-info: ' &7(poplatek: &f{0} &7+ &f{1}%&7, obdržíš &f{2}&7)'
 #Some messages the plugin will send
 messages:
    error-player-not-found: '&fHráč nebyl nalezen!'

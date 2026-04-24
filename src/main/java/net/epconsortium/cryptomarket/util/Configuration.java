@@ -181,13 +181,13 @@ public class Configuration {
     }
 
     /**
-     * Returns the withdrawal fee info message appended to the sell
-     * confirmation prompt.
+     * Returns the withdrawal fee info line appended to the sell
+     * confirmation/summary view (and success chat message).
      *
      * @return the message
      */
     public String getMessageWithdrawalFeeInfo() {
-        return getColoredString("negotiation-chat.withdrawal-fee-info",
+        return getColoredString("negotiation.withdrawal-fee-info",
                 " (fee: {0} + {1}%, you receive {2})");
     }
 
@@ -242,45 +242,6 @@ public class Configuration {
     }
 
     /**
-     * Returns the word the user must type in order to leave the Negotiation
-     * Chat
-     *
-     * @return the exit word
-     */
-    public String getConversationWordOfExit() {
-        return getColoredString("negotiation-chat.exit-word", "quit");
-    }
-
-    /**
-     * Returns the chat prefix of the negotiation chat
-     *
-     * @return prefix
-     */
-    public String getNegotiationChatPrefix() {
-        return getColoredString("negotiation-chat.prefix", "[CriptoMarket] ");
-    }
-
-    /**
-     * Returns the message of selling coins
-     *
-     * @return the message
-     */
-    public String getMessageSellNegotiation() {
-        return getColoredString("negotiation-chat.how-much-sell",
-                "How much do you want to sell?");
-    }
-
-    /**
-     * Returns the message of buying coins
-     *
-     * @return the message
-     */
-    public String getMessageBuyNegotiation() {
-        return getColoredString("negotiation-chat.how-much-buy",
-                "How much do you want to buy?");
-    }
-
-    /**
      * Returns the connecting to database error message
      *
      * @return the message
@@ -299,16 +260,6 @@ public class Configuration {
     public String getMessageErrorInsufficientBalance() {
         return getColoredString("messages.error-take-insufficient-balance",
                 "&fThe player does not have enough balance!");
-    }
-
-    /**
-     * Returns the invalid value error message
-     *
-     * @return the message
-     */
-    public String getMessageErrorInvalidValue() {
-        return getColoredString("negotiation-chat.error-invalid-value",
-                "Please, insert a valid value!");
     }
 
     /**
@@ -332,12 +283,13 @@ public class Configuration {
     }
 
     /**
-     * Returns the insufficient balance error message
+     * Returns the insufficient balance error message sent to the player
+     * when a negotiation fails.
      *
      * @return the message
      */
     public String getMessageErrorNotEnoughBalance() {
-        return getColoredString("negotiation-chat.error-insufficient-balance",
+        return getColoredString("negotiation.error-insufficient-balance",
                 "You don't have enough balance!");
     }
 
@@ -391,26 +343,6 @@ public class Configuration {
     public String getMessageConfigReloadFailed() {
         return getColoredString("messages.config-reload-failed",
                 "&cFailed to reload the config. Check the console for details.");
-    }
-
-    /**
-     * Returns the valid coins list message
-     *
-     * @return the message
-     */
-    public String getMessageValidCoins() {
-        return getColoredString("negotiation-chat.valid-coins",
-                "Valid coins: {0}");
-    }
-
-    /**
-     * Returns the choose a coin to negotiate message
-     *
-     * @return the message
-     */
-    public String getMessageChooseCoin() {
-        return getColoredString("negotiation-chat.choose-coin",
-                "Which coin do you want to negotiate?");
     }
 
     /**
@@ -640,7 +572,7 @@ public class Configuration {
      * @return the name
      */
     public String getActionBuy() {
-        return getColoredString("negotiation-chat.buy-action", "buy");
+        return getColoredString("negotiation.buy-action", "buy");
     }
 
     /**
@@ -649,35 +581,7 @@ public class Configuration {
      * @return the name
      */
     public String getActionSell() {
-        return getColoredString("negotiation-chat.sell-action", "sell");
-    }
-
-    /**
-     * Returns the confirmation prompt message
-     *
-     * @return the message
-     */
-    public String getMessageNegotiationConfirmation() {
-        return getColoredString("negotiation-chat.confirmation",
-                "Do you want {0} {1} {2} for {3} coins?");
-    }
-
-    /**
-     * Returns the confirmation word of the negotiation
-     *
-     * @return word
-     */
-    public String getNegotiationYesWord() {
-        return getConfig().getString("negotiation-chat.yes-word", "yes");
-    }
-
-    /**
-     * Returns the cancellation word of the negotiation
-     *
-     * @return word
-     */
-    public String getNegotiationNoWord() {
-        return getConfig().getString("negotiation-chat.cancel-word", "cancel");
+        return getColoredString("negotiation.sell-action", "sell");
     }
 
     /**
@@ -686,18 +590,8 @@ public class Configuration {
      * @return the message
      */
     public String getMessageSuccessfulNegotiation() {
-        return getColoredString("negotiation-chat.success",
+        return getColoredString("negotiation.success",
                 "Successful negotiation!");
-    }
-
-    /**
-     * Returns the how to leave the chat warning message
-     *
-     * @return the messagee
-     */
-    public String getMessageExitWarning() {
-        return getColoredString("negotiation-chat.warning",
-                "To exit the negotiation, type {0}");
     }
 
     /**
@@ -706,9 +600,151 @@ public class Configuration {
      * @return the message
      */
     public String getMessageOutdatedData() {
-        return getColoredString("negotiation-chat.error-outdated-data",
+        return getColoredString("negotiation.error-outdated-data",
                 "The negotiation failed: the data is outdated! Please use the"
                 + " Update button/command!");
+    }
+
+    // ========================================================================
+    // Negotiation GUI labels
+    // ========================================================================
+
+    public String getNegotiationActionFrameName() {
+        return getColoredString("negotiation.action-frame.name", "&eChoose action");
+    }
+
+    public String getNegotiationBuyButtonName() {
+        return getColoredString("negotiation.action-frame.buy-button", "&aBuy");
+    }
+
+    public List<String> getNegotiationBuyButtonLore() {
+        return getColoredList("negotiation.action-frame.buy-button-lore");
+    }
+
+    public String getNegotiationSellButtonName() {
+        return getColoredString("negotiation.action-frame.sell-button", "&cSell");
+    }
+
+    public List<String> getNegotiationSellButtonLore() {
+        return getColoredList("negotiation.action-frame.sell-button-lore");
+    }
+
+    public String getNegotiationBackButtonName() {
+        return getColoredString("negotiation.back-button", "&aBack");
+    }
+
+    public String getNegotiationCoinFrameName() {
+        return getColoredString("negotiation.coin-frame.name", "&eChoose coin");
+    }
+
+    /**
+     * @return coin button name template; {0} = coin symbol
+     */
+    public String getNegotiationCoinButtonName() {
+        return getColoredString("negotiation.coin-frame.coin-button-name", "&f{0}");
+    }
+
+    /**
+     * @return coin button lore lines; placeholders {0} = formatted value,
+     *         {1} = physical currency
+     */
+    public List<String> getNegotiationCoinButtonLore() {
+        return getColoredList("negotiation.coin-frame.coin-button-lore");
+    }
+
+    public String getNegotiationCoinButtonUnavailable() {
+        return getColoredString("negotiation.coin-frame.coin-button-unavailable",
+                "&cNo data");
+    }
+
+    /**
+     * @return amount frame title; {0} = action, {1} = coin
+     */
+    public String getNegotiationAmountFrameName() {
+        return getColoredString("negotiation.amount-frame.name", "&e{0} {1}");
+    }
+
+    /**
+     * @return info item name template; {0} = amount, {1} = coin
+     */
+    public String getNegotiationAmountInfoName() {
+        return getColoredString("negotiation.amount-frame.info-name", "&f{0} {1}");
+    }
+
+    /**
+     * @return info item lore. Placeholders:
+     *         {0} = gross server-currency value,
+     *         {1} = physical currency,
+     *         {2} = flat fee,
+     *         {3} = percentage fee,
+     *         {4} = net amount after fees (sell only)
+     */
+    public List<String> getNegotiationAmountInfoLore() {
+        return getColoredList("negotiation.amount-frame.info-lore");
+    }
+
+    /**
+     * @return info item lore for sell (with fee lines).
+     */
+    public List<String> getNegotiationAmountInfoLoreSell() {
+        return getColoredList("negotiation.amount-frame.info-lore-sell");
+    }
+
+    /**
+     * @return increment button name; {0} = step amount
+     */
+    public String getNegotiationIncrementButtonName() {
+        return getColoredString("negotiation.amount-frame.increment-button", "&a+{0}");
+    }
+
+    /**
+     * @return decrement button name; {0} = step amount
+     */
+    public String getNegotiationDecrementButtonName() {
+        return getColoredString("negotiation.amount-frame.decrement-button", "&c-{0}");
+    }
+
+    public String getNegotiationConfirmButtonName() {
+        return getColoredString("negotiation.confirm-button", "&aConfirm");
+    }
+
+    public String getNegotiationCancelButtonName() {
+        return getColoredString("negotiation.cancel-button", "&cCancel");
+    }
+
+    public String getNegotiationConfirmFrameName() {
+        return getColoredString("negotiation.confirm-frame.name", "&eConfirm");
+    }
+
+    /**
+     * @return confirm summary item name; {0} = action, {1} = amount, {2} = coin
+     */
+    public String getNegotiationConfirmSummaryName() {
+        return getColoredString("negotiation.confirm-frame.summary-name",
+                "&f{0} {1} {2}");
+    }
+
+    /**
+     * @return confirm summary lore. Placeholders match
+     *         {@link #getNegotiationAmountInfoLore()}.
+     */
+    public List<String> getNegotiationConfirmSummaryLore() {
+        return getColoredList("negotiation.confirm-frame.summary-lore");
+    }
+
+    public List<String> getNegotiationConfirmSummaryLoreSell() {
+        return getColoredList("negotiation.confirm-frame.summary-lore-sell");
+    }
+
+    private List<String> getColoredList(String path) {
+        List<String> lore = getConfig().getStringList(path);
+        ArrayList<String> out = new ArrayList<>();
+        if (lore != null) {
+            for (String s : lore) {
+                out.add(ChatColor.translateAlternateColorCodes('&', s));
+            }
+        }
+        return out;
     }
 
     /**
