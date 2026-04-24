@@ -181,8 +181,10 @@ public class AmountFrame extends Frame {
     }
 
     /**
-     * Computes the maximum whole-unit amount the player can trade right now.
-     * BUY: floor(vault balance / unit price). SELL: floor(crypto balance).
+     * Computes the maximum amount the player can trade right now.
+     * BUY: vault balance / unit price (spend every last coin).
+     * SELL: the investor's exact crypto balance for this coin.
+     * Both use a fractional scale of 8 digits, matching the cryptocoin formatter.
      */
     private BigDecimal computeMaxAmount() {
         Economy economy = plugin.getEconomy();
@@ -191,8 +193,7 @@ public class AmountFrame extends Frame {
             if (investor == null) {
                 return BigDecimal.ZERO;
             }
-            BigDecimal balance = investor.getBalance(coin).getValue();
-            return balance.setScale(0, RoundingMode.FLOOR).max(BigDecimal.ZERO);
+            return investor.getBalance(coin).getValue().max(BigDecimal.ZERO);
         }
         BigDecimal unitPrice = economy.convert(coin, BigDecimal.ONE);
         if (unitPrice.compareTo(BigDecimal.ZERO) <= 0) {
@@ -202,7 +203,7 @@ public class AmountFrame extends Frame {
         if (vault <= 0) {
             return BigDecimal.ZERO;
         }
-        BigDecimal max = BigDecimal.valueOf(vault).divide(unitPrice, 0, RoundingMode.FLOOR);
+        BigDecimal max = BigDecimal.valueOf(vault).divide(unitPrice, 8, RoundingMode.FLOOR);
         return max.max(BigDecimal.ZERO);
     }
 

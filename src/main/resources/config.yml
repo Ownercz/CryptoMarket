@@ -50,8 +50,7 @@ menu:
          - ' '
          - '&f{0}'
          - ' '
-         - '&7Levé tlačítko - &cProdat'
-         - '&7Pravé tlačítko - &aKoupit'
+         - '&7Klikni pro otevření obchodu'
          #For each coin you added to the coin list, a coin-line will be added to the lore
          # {0} is the name of the coin
          # {1} is the value
@@ -201,12 +200,14 @@ negotiation:
       increment-button: '&a&l+{0}'
       decrement-button: '&c&l-{0}'
       #Sets the amount to the maximum the player can trade:
-      # BUY  = floor(vault balance / coin price)
-      # SELL = floor(current crypto balance of that coin)
+      # BUY  = vault balance / coin price (spend all money, fractional)
+      # SELL = exact crypto balance of that coin (sell everything)
       max-button: '&6&lMax'
       max-button-lore:
-      - '&7Nastaví množství na'
-      - '&7maximum, které můžeš obchodovat.'
+      - '&7Nastaví množství na maximum,'
+      - '&7které můžeš obchodovat.'
+      - '&8Nákup: utratí vše z peněženky'
+      - '&8Prodej: prodá všechny mince'
    #Confirmation frame (final review before committing)
    confirm-frame:
       name: '&e&lPotvrzení'
