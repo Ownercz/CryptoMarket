@@ -200,6 +200,13 @@ negotiation:
       # {0} is the step amount (1, 10, 100, 1000)
       increment-button: '&a&l+{0}'
       decrement-button: '&c&l-{0}'
+      #Sets the amount to the maximum the player can trade:
+      # BUY  = floor(vault balance / coin price)
+      # SELL = floor(current crypto balance of that coin)
+      max-button: '&6&lMax'
+      max-button-lore:
+      - '&7Nastaví množství na'
+      - '&7maximum, které můžeš obchodovat.'
    #Confirmation frame (final review before committing)
    confirm-frame:
       name: '&e&lPotvrzení'

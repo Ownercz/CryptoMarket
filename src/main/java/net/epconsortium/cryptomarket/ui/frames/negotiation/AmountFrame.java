@@ -1,6 +1,7 @@
 package net.epconsortium.cryptomarket.ui.frames.negotiation;
 
 import com.cryptomorin.xseries.XMaterial;
+import net.epconsortium.cryptomarket.database.dao.Investor;
 import net.epconsortium.cryptomarket.finances.Economy;
 import net.epconsortium.cryptomarket.finances.Negotiation;
 import net.epconsortium.cryptomarket.ui.Component;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ public class AmountFrame extends Frame {
     private static final int[] DECREMENT_SLOTS = {11, 12, 13, 14}; // -1000, -100, -10, -1
     private static final int[] INCREMENT_SLOTS = {30, 31, 32, 33}; // +1, +10, +100, +1000
     private static final int INFO_SLOT = 22;
+    private static final int MAX_SLOT = 49;
     private static final int BACK_SLOT = 48;
     private static final int CONFIRM_SLOT = 50;
 
@@ -74,6 +77,7 @@ public class AmountFrame extends Frame {
             add(stepButton(STEPS[STEPS.length - 1 - i], INCREMENT_SLOTS[i], true));
         }
         add(confirmButton());
+        add(maxButton());
         add(backButton());
         addGlasses();
     }
@@ -162,11 +166,52 @@ public class AmountFrame extends Frame {
         return c;
     }
 
+    private Component maxButton() {
+        BigDecimal max = computeMaxAmount();
+        Component c = new ComponentImpl.Builder(XMaterial.GOLD_INGOT)
+                .withDisplayName(configuration.getNegotiationMaxButtonName())
+                .withLore(configuration.getNegotiationMaxButtonLore())
+                .withSlot(MAX_SLOT)
+                .build();
+        if (max.compareTo(BigDecimal.ZERO) > 0) {
+            c.setListener(ClickType.LEFT, () -> InventoryDrawer.getInstance().open(
+                    new AmountFrame(getParent(), getViewer(), negotiation, coin, max)));
+        }
+        return c;
+    }
+
+    /**
+     * Computes the maximum whole-unit amount the player can trade right now.
+     * BUY: floor(vault balance / unit price). SELL: floor(crypto balance).
+     */
+    private BigDecimal computeMaxAmount() {
+        Economy economy = plugin.getEconomy();
+        if (negotiation == Negotiation.SELL) {
+            Investor investor = plugin.getInvestorDao().getInvestor(getViewer());
+            if (investor == null) {
+                return BigDecimal.ZERO;
+            }
+            BigDecimal balance = investor.getBalance(coin).getValue();
+            return balance.setScale(0, RoundingMode.FLOOR).max(BigDecimal.ZERO);
+        }
+        BigDecimal unitPrice = economy.convert(coin, BigDecimal.ONE);
+        if (unitPrice.compareTo(BigDecimal.ZERO) <= 0) {
+            return BigDecimal.ZERO;
+        }
+        double vault = plugin.getVaultEconomy().getBalance(getViewer());
+        if (vault <= 0) {
+            return BigDecimal.ZERO;
+        }
+        BigDecimal max = BigDecimal.valueOf(vault).divide(unitPrice, 0, RoundingMode.FLOOR);
+        return max.max(BigDecimal.ZERO);
+    }
+
     private void addGlasses() {
         List<Integer> taken = new ArrayList<>();
         taken.add(INFO_SLOT);
         taken.add(CONFIRM_SLOT);
         taken.add(BACK_SLOT);
+        taken.add(MAX_SLOT);
         for (int s : DECREMENT_SLOTS) taken.add(s);
         for (int s : INCREMENT_SLOTS) taken.add(s);
 

@@ -704,6 +704,14 @@ public class Configuration {
         return getColoredString("negotiation.amount-frame.decrement-button", "&c-{0}");
     }
 
+    public String getNegotiationMaxButtonName() {
+        return getColoredString("negotiation.amount-frame.max-button", "&6Max");
+    }
+
+    public List<String> getNegotiationMaxButtonLore() {
+        return getColoredList("negotiation.amount-frame.max-button-lore");
+    }
+
     public String getNegotiationConfirmButtonName() {
         return getColoredString("negotiation.confirm-button", "&aConfirm");
     }
