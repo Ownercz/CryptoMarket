@@ -352,6 +352,48 @@ public class Configuration {
     }
 
     /**
+     * Returns the config reloaded success message
+     *
+     * @return the message
+     */
+    public String getMessageConfigReloaded() {
+        return getColoredString("messages.config-reloaded",
+                "&aConfig reloaded successfully!");
+    }
+
+    /**
+     * Returns the message shown when the config was reloaded but missing
+     * keys had to be added from defaults
+     *
+     * @return the message
+     */
+    public String getMessageConfigReloadedMerged() {
+        return getColoredString("messages.config-reloaded-merged",
+                "&aConfig reloaded. Missing keys were added from defaults.");
+    }
+
+    /**
+     * Returns the message shown when the config was corrupted and restored
+     * from the bundled defaults
+     *
+     * @return the message
+     */
+    public String getMessageConfigRestored() {
+        return getColoredString("messages.config-restored",
+                "&eConfig was corrupted and has been restored from defaults. A backup was saved.");
+    }
+
+    /**
+     * Returns the config reload failure message
+     *
+     * @return the message
+     */
+    public String getMessageConfigReloadFailed() {
+        return getColoredString("messages.config-reload-failed",
+                "&cFailed to reload the config. Check the console for details.");
+    }
+
+    /**
      * Returns the valid coins list message
      *
      * @return the message

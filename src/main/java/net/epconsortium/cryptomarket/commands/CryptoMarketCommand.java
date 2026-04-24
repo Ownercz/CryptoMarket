@@ -58,6 +58,8 @@ public class CryptoMarketCommand implements CommandExecutor, TabCompleter {
                 return processTodayCommand(commandSender);
             case "update":
                 return processUpdateCommand(commandSender);
+            case "reload":
+                return processReloadCommand(commandSender);
         }
 
         if (commandSender instanceof Player) {
@@ -140,7 +142,7 @@ public class CryptoMarketCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender commandSender,
             Command command, String label, String[] args) {
         List<String> subCommands = Arrays.asList("set", "give", "take", "save",
-                "balance", "update", "today", "help");
+                "balance", "update", "today", "help", "reload");
         if (args.length == 0) {
             return subCommands;
         }
@@ -365,6 +367,36 @@ public class CryptoMarketCommand implements CommandExecutor, TabCompleter {
      */
     private boolean processHelpCommand(CommandSender sender) {
         config.getHelpCommandMessages().forEach(sender::sendMessage);
+        return true;
+    }
+
+    /**
+     * Process the reload command
+     *
+     * @param sender sender
+     * @return true if the syntax is ok
+     */
+    private boolean processReloadCommand(CommandSender sender) {
+        if (!sender.hasPermission("cryptomarket.reload")) {
+            sender.sendMessage(config.getMessageErrorNoPermission());
+            return true;
+        }
+        CryptoMarket.ReloadResult result = plugin.reloadPluginConfig();
+        switch (result) {
+            case OK:
+                sender.sendMessage(config.getMessageConfigReloaded());
+                break;
+            case MERGED:
+                sender.sendMessage(config.getMessageConfigReloadedMerged());
+                break;
+            case RESTORED:
+                sender.sendMessage(config.getMessageConfigRestored());
+                break;
+            case FAILED:
+            default:
+                sender.sendMessage(config.getMessageConfigReloadFailed());
+                break;
+        }
         return true;
     }
 }

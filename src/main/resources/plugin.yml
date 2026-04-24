@@ -31,6 +31,8 @@ permissions:
     default: op
   cryptomarket.set:
     default: op
+  cryptomarket.reload:
+    default: op
 commands:
   cryptomarket:
     aliases: [cm, cpm, crypto]

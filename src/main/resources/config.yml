@@ -220,6 +220,10 @@ messages:
    #If something is wrong when trying to open the Ranking menu
    error-ranking-data: '&fChyba při načítání žebříčku!'
    new-balance: '&fTvůj nový zůstatek &7{0} &fje: &7{1}'
+   config-reloaded: '&aKonfigurace byla úspěšně načtena!'
+   config-reloaded-merged: '&aKonfigurace načtena. Chybějící položky byly doplněny z výchozího nastavení.'
+   config-restored: '&eKonfigurace byla poškozená a byla obnovena z výchozího nastavení. Záloha byla uložena.'
+   config-reload-failed: '&cNepodařilo se načíst konfiguraci. Podrobnosti najdeš v konzoli.'
    help-command:
    - '&bCryptoMarket - Nápověda'
    - '&b/cm balance - zobrazí tvůj zůstatek'
@@ -229,3 +233,4 @@ messages:
    - '&c/cm give <hráč> <množství> <měna> - dá hráči měnu'
    - '&c/cm take <hráč> <množství> <měna> - odebere hráči měnu'
    - '&c/cm set <hráč> <množství> <měna> - nastaví hráči měnu'
+   - '&c/cm reload - znovu načte konfiguraci'
