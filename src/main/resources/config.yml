@@ -19,6 +19,16 @@ mysql:
    password: '1234'
 #Set here the currency to compare against the cryptocoin value
 physical-currency: USD
+#Fees charged by the market on user operations
+fees:
+   #Fees charged on withdrawal (when the user sells cryptocoin and receives server money)
+   #Both are subtracted from the amount the user would receive.
+   #Order: the flat fee is subtracted first, then the percentage is applied to the remainder.
+   withdrawal:
+      #Flat fee deducted from the sell value, in the server currency
+      flat: 0.0
+      #Percentage fee (0 = no fee, 100 = take everything). Example: 2.5 means 2.5%
+      percentage: 0.0
 #Coins that the plugin will work with (you can find a list of valid coin in the digital_currency_list.csv file inside the JAR)
 coins:
 - BTC

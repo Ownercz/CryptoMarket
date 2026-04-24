@@ -193,8 +193,15 @@ public class Economy {
 
         debug("Processing the sell of crypto for " + investor);
         debug("Amount: " + amount);
-        double toReceive = convert(coin, amount).doubleValue();
-        debug("To receive: " + toReceive);
+        double grossValue = convert(coin, amount).doubleValue();
+        double flatFee = config.getWithdrawalFlatFee();
+        double percentageFee = config.getWithdrawalPercentageFee();
+        double toReceive = (grossValue - flatFee) * (1 - percentageFee / 100d);
+        if (toReceive < 0) {
+            toReceive = 0;
+        }
+        debug("Gross value: " + grossValue + ", flat fee: " + flatFee
+                + ", percentage fee: " + percentageFee + "%, to receive: " + toReceive);
 
         if (amount.doubleValue() > 0) {
             if (has(coin, investor, amount)) {

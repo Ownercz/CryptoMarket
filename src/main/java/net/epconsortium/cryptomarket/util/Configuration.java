@@ -152,6 +152,35 @@ public class Configuration {
     }
 
     /**
+     * Returns the flat withdrawal fee charged in the server currency when the
+     * investor sells cryptocoin and receives server money. Negative values
+     * are clamped to 0.
+     *
+     * @return the flat withdrawal fee
+     */
+    public double getWithdrawalFlatFee() {
+        double fee = getConfig().getDouble("fees.withdrawal.flat", 0.0);
+        return Math.max(0, fee);
+    }
+
+    /**
+     * Returns the withdrawal fee as a percentage (0-100) charged when the
+     * investor sells cryptocoin and receives server money. Values outside
+     * the [0, 100] range are clamped.
+     *
+     * @return the withdrawal fee percentage
+     */
+    public double getWithdrawalPercentageFee() {
+        double fee = getConfig().getDouble("fees.withdrawal.percentage", 0.0);
+        if (fee < 0) {
+            fee = 0;
+        } else if (fee > 100) {
+            fee = 100;
+        }
+        return fee;
+    }
+
+    /**
      * Returns the coins list. Only valid coins are returned, if none is valid,
      * BTC will be added to the list
      *
