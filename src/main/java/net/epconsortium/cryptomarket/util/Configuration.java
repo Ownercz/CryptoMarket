@@ -181,6 +181,17 @@ public class Configuration {
     }
 
     /**
+     * Returns the withdrawal fee info message appended to the sell
+     * confirmation prompt.
+     *
+     * @return the message
+     */
+    public String getMessageWithdrawalFeeInfo() {
+        return getColoredString("negotiation-chat.withdrawal-fee-info",
+                " (fee: {0} + {1}%, you receive {2})");
+    }
+
+    /**
      * Returns the coins list. Only valid coins are returned, if none is valid,
      * BTC will be added to the list
      *

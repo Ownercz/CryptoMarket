@@ -18,7 +18,7 @@ mysql:
    user: root
    password: '1234'
 #Set here the currency to compare against the cryptocoin value
-physical-currency: USD
+physical-currency: EUR
 #Fees charged by the market on user operations
 fees:
    #Fees charged on withdrawal (when the user sells cryptocoin and receives server money)
@@ -32,32 +32,35 @@ fees:
 #Coins that the plugin will work with (you can find a list of valid coin in the digital_currency_list.csv file inside the JAR)
 coins:
 - BTC
+- LTC
+- ETH
+- XMR
 #The main menu of the plugin, accessed using /cryptomarket
 menu:
    #Name of the menu
-   name: '&7CryptoMarket'
+   name: '&e&lMinecore Crypto Burza'
    #Items configuration
    items:
       #The item that shows the current Exchange Rates
       coins:
-         name: '&7Coins / Values'
+         name: '&a&lPENÍZE'
          #The lore of Coins item
          # {0} holds space for the coin line(s)
          lore:
          - ' '
          - '&f{0}'
          - ' '
-         - '&7Right Click - &aBuy'
-         - '&7Left Click - &cSell'
+         - '&7Levé tlačítko - &cProdat'
+         - '&7Pravé tlačítko - &aKoupit'
          #For each coin you added to the coin list, a coin-line will be added to the lore
          # {0} is the name of the coin
          # {1} is the value
          coin-line: '&f{0} &7{1}'
          #Message showed instead of the value when there has been an error
-         error-no-data: Error, update!
+         error-no-data: Chyba, aktualizuj!
       #The item that shows the current balance of the investor
       wallet:
-         name: '&3Wallet'
+         name: '&3&lPENĚŽENKA'
          #The lore of the Wallet
          # {0} is the investor's server balance (Vault)
          # {1} is a placeholder for the coin line(s) (it works like the Coins item)
@@ -70,7 +73,7 @@ menu:
          coin-line: '&f{0} &7{1}'
       #The item that shows the profit if the investor sells all balance of one coin
       profit:
-         name: '&fProfit selling now'
+         name: '&fZisk při prodeji nyní'
          #The lore of the Profit item
          # {0} is a placeholder for the coin line(s) (it works like the Coins item)
          lore:
@@ -87,22 +90,22 @@ menu:
             positive: '&a'
             neuter: '&f'
             negative: '&c'
-      calendar: '&aCalendar'
-      update: '&aUpdate'
-      ranking: '&aRanking'
+      calendar: '&aKalendář'
+      update: '&aAktualizovat'
+      ranking: '&aŽebříček'
 #The Calendar menu, accessed via main menu
 #It shows the rates of previous days
 calendar:
-   name: '&fCalendar'
+   name: '&f&lKALENDÁŘ'
    items:
-      back: '&aBACK'
-      next-month: '&aNext Month'
-      previous-month: '&aPrevious Month'
+      back: '&aZPĚT'
+      next-month: '&aDalší měsíc'
+      previous-month: '&aPředchozí měsíc'
       #Configures a single day in the Calendar
       day:
          #Name of the Day item
          # {0} is the day number
-         name: '&fDay {0}'
+         name: '&fDen {0}'
          #This works like Coins' lore, please refer to it
          lore:
          - ' '
@@ -111,14 +114,14 @@ calendar:
          #Also works like Coins' coin line
          coin-line: '{0} {1}'
          #This is showed in days after today, where there is no rate yet
-         no-rates: '&c&oNo data'
+         no-rates: '&c&oŽádná data'
          #Message showed instead of the value when there has been an error
-         error-no-data: Error, update!
+         error-no-data: Chyba, aktualizuj!
 #The Ranking menu, also accessed via main menu
 ranking:
-   name: '&fRanking'
+   name: '&6&lINVESTOŘI'
    items:
-      back: '&aBACK'
+      back: '&aZPĚT'
       #Configures a richer item
       richer:
          #The name of the item
@@ -134,10 +137,10 @@ ranking:
          - ' '
          #If there is not investor in the rank
          # {0} is the position in the rank
-         no-investor: '#{0} No investor'
+         no-investor: '#{0} Žádný investor'
       total-investments:
          # Name of the item
-         name: '&fTotal investments'
+         name: '&fCelkové investice'
          # {0} is the total invested in the server
          lore:
          - ' '
@@ -145,7 +148,7 @@ ranking:
          - ' '
       last-updated:
          # Name of the item
-         name: '&fLast updated'
+         name: '&fNaposledy aktualizováno'
          # {0} is the date and time
          lore:
          - ' '
@@ -154,70 +157,75 @@ ranking:
 #Configuration relative to the Negotiation Chat, started using the Coins item in the main menu
 negotiation-chat:
    #Prefix of the chat
-   prefix: '&7[CryptoMarket] '
+   prefix: '&e&lMinecore Burza &7→ '
    #What word the user must type to end the negotiation
-   exit-word: quit
+   exit-word: konec
    #First message of the conversation, {0} is the exit word
-   warning: '&fTo exit the negotiation, type &7{0}&f at any time.'
-   choose-coin: '&fWhich coin do you want to negotiate?'
+   warning: '&fPro ukončení napiš &7{0}&f kdykoliv.'
+   choose-coin: '&fJakou měnu chceš obchodovat?'
    # {0} is a formated list of the coins
-   valid-coins: '&fValid coins: {0}'
-   how-much-buy: '&fHow much do you want to buy?'
-   how-much-sell: '&fHow much do you want to sell?'
-   error-insufficient-balance: '&fYou don''t have enough balance!'
+   valid-coins: '&fPlatné měny: {0}'
+   how-much-buy: '&fKolik chceš koupit?'
+   how-much-sell: '&fKolik chceš prodat?'
+   error-insufficient-balance: '&fNemáš dostatek prostředků!'
    #If the user neither insert numbers nor a positive one
-   error-invalid-value: '&fPlease, insert a valid value!'
+   error-invalid-value: '&fZadej platnou hodnotu!'
    #If there had been an error fetching the rates
-   error-outdated-data: '&fThe negotiation failed: the data is outdated! Please use the Update button/command!'
+   error-outdated-data: '&fObchod selhal: data jsou zastaralá! Aktualizuj je!'
    #Everything is ready to finish the negotiation, all the user need is to confirm
    # {0} is the action (sell-action or buy-action)
    # {1} is the amount
    # {2} is the cryptocoin
    # {3} is the server coin amount
-   confirmation: '&fDo you want to &7{0} {1} {2} &ffor &7{3} &fcoins?'
+   confirmation: '&fChceš &7{0} {1} {2} &fza &7{3} &fmincí?'
+   #Appended to the confirmation message when the action is a sell (withdrawal) and any fee is configured
+   # {0} is the flat fee
+   # {1} is the percentage fee
+   # {2} is the net amount the user will actually receive
+   withdrawal-fee-info: ' &7(poplatek: &f{0} &7+ &f{1}%&7, obdržíš &f{2}&7)'
    #Used to confirm the negotiation
-   yes-word: "yes"
+   yes-word: "ano"
    #Used to cancel it and restart
-   cancel-word: cancel
-   sell-action: sell
-   buy-action: buy
+   cancel-word: zrušit
+   sell-action: prodat
+   buy-action: koupit
    #Last message
-   success: '&fSuccessful negotiation!'
+   success: '&fObchod proběhl úspěšně!'
 #Some messages the plugin will send
 messages:
-   error-player-not-found: '&fThe inserted player was not found!'
-   error-invalid-amount: '&fThe inserted amount is not a valid number or is equal or less than zero!'
-   error-invalid-coin: '&fThe inserted coin is not valid!'
-   error-take-insufficient-balance: '&fThe player does not have enough balance!'
-   error-database: '&fThere has been an error connecting to the database, contact an admin, please!'
-   error-no-permission: '&fYou don''t have permission to do this!'
-   saving-data: '&fSaving data...'
-   player-balance-updated: '&f{0}''''s balance updated!'
+   error-player-not-found: '&fHráč nebyl nalezen!'
+   error-invalid-amount: '&fZadané množství není platné číslo nebo je menší či rovno nule!'
+   error-invalid-coin: '&fNeplatná měna!'
+   error-take-insufficient-balance: '&fHráč nemá dostatek prostředků!'
+   error-database: '&fChyba při připojení k databázi, kontaktuj admina!'
+   error-no-permission: '&fNemáš oprávnění!'
+   saving-data: '&fUkládám data...'
+   player-balance-updated: '&fZůstatek hráče {0} byl aktualizován!'
    # {0} is the approximated minutes to complete the update, considering the API limits
-   updating-content: '&fUpdating content, please, wait {0} minute(s)!'
-   already-uptodate: '&fThis is not necessary, the content is already up-to-date or an update is in progress!'
-   balance: '&fYour balance is:'
+   updating-content: '&fAktualizuji data, počkej {0} minut!'
+   already-uptodate: '&fData jsou již aktuální nebo se právě aktualizují!'
+   balance: '&fTvůj zůstatek je:'
    #This will be sent after balance
    #One message per coin set in this config
    # {0} is the coin name
    # {1} is its value
    balance-per-coin: '&a{0}: &f{1}'
-   current-rates: 'The coins are worth:'
+   current-rates: 'Kurzy jsou:'
    #This will be sent after the message above
    #One message per coin set in this config
    # {0} is the coin name
    # {1} is its value
    current-rates-per-coin: '&a{0}: &f{1}'
-   outdated-data: Outdated data, please update!
+   outdated-data: Zastaralá data, aktualizuj!
    #If something is wrong when trying to open the Ranking menu
-   error-ranking-data: '&fThere has been an error accessing the Ranking data, contact an admin, please!'
-   new-balance: '&fYour new &7{0} balance &fis: &7{1}'
+   error-ranking-data: '&fChyba při načítání žebříčku!'
+   new-balance: '&fTvůj nový zůstatek &7{0} &fje: &7{1}'
    help-command:
-   - '&bCryptoMarket - Help'
-   - '&b/cm balance - shows your balance'
-   - '&b/cm today - shows today''s exchange rates'
-   - '&b/cm update - updates the exchange rates'
-   - '&c/cm save - saves the data to the database'
-   - '&c/cm give <target> <amount> <coin> - gives the amount of the coin to the target player'
-   - '&c/cm take <target> <amount> <coin> - takes the amount of the coin from the target player'
-   - '&c/cm set <target> <amount> <coin> - sets the amount of the coin as the target''s balance'
+   - '&bCryptoMarket - Nápověda'
+   - '&b/cm balance - zobrazí tvůj zůstatek'
+   - '&b/cm today - zobrazí dnešní kurzy'
+   - '&b/cm update - aktualizuje kurzy'
+   - '&c/cm save - uloží data do databáze'
+   - '&c/cm give <hráč> <množství> <měna> - dá hráči měnu'
+   - '&c/cm take <hráč> <množství> <měna> - odebere hráči měnu'
+   - '&c/cm set <hráč> <množství> <měna> - nastaví hráči měnu'

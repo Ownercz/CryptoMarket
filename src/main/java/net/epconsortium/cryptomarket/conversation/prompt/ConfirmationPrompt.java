@@ -77,7 +77,22 @@ public class ConfirmationPrompt extends FixedSetPrompt {
         BigDecimal amount = ((BigDecimal) context.getSessionData("amount"));
         BigDecimal value = plugin.getEconomy().convert(coin, amount);
 
-        return MessageFormat.format(message, action, amount, coin, value) + " " + formatFixedSet();
+        String promptText = MessageFormat.format(message, action, amount, coin, value);
+
+        if (negotiation == Negotiation.SELL) {
+            double flatFee = config.getWithdrawalFlatFee();
+            double percentageFee = config.getWithdrawalPercentageFee();
+            if (flatFee > 0 || percentageFee > 0) {
+                double net = (value.doubleValue() - flatFee) * (1 - percentageFee / 100d);
+                if (net < 0) {
+                    net = 0;
+                }
+                promptText += MessageFormat.format(config.getMessageWithdrawalFeeInfo(),
+                        flatFee, percentageFee, net);
+            }
+        }
+
+        return promptText + " " + formatFixedSet();
     }
 
     private Negotiation getNegotiation(ConversationContext context) {
